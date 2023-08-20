@@ -22,11 +22,11 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">Request</th>
-                    <th scope="col">URL</th>
-                    <th scope="col">HTTP Method</th>
-                    <th scope="col">Request body data format</th>
-                    <th scope="col">Response body data format</th>
+                    <th>Request</th>
+                    <th>URL</th>
+                    <th>HTTP Method</th>
+                    <th>Request body data format</th>
+                    <th>Response body data format</th>
                 </tr>
             </thead>
             <tbody>
@@ -98,7 +98,7 @@
                     <td>Add a new user</td>
                     <td>/users</td>
                     <td>POST</td>
-                    <td>A JSON object holding data about the user to add, structured like:
+                    <td>A JSON object containing data about the user to add, structured like:
                         <code>
                         {
                             "Name": "John",
@@ -108,19 +108,19 @@
                         }
                         </code>
                     </td>
-                    <td>A text that an user has been added</td>
+                    <td>A text message indicating the user has been added</td>
                 </tr>
                 <tr>
                     <td>Update user info</td>
                     <td>/users/:id</td>
                     <td>PUT</td>
-                    <td>A JSON object holding user info that shold be changed. It should contain one of the following key/value pairs:
+                    <td>A JSON object containing user info that shold be changed. It should contain one of the following key/value pairs:
                         <code>
                         {
                             "Name": String,
                             "Email": String,
                             "Password": String,
-                            "Birthday": number
+                            "Birthday": data
                         }
                         </code>
                     </td>
@@ -131,21 +131,21 @@
                     <td>users/:id/movieTitle</td>
                     <td>POST</td>
                     <td>none</td>
-                    <td>A text that a movie has been added</td>
+                    <td>A text message indicating the movie has been added</td>
                 </tr>
                 <tr>
                     <td>Remove a movie from user's list of favorites</td>
                     <td>/users/:id/:movieTitle</td>
                     <td>DELETE</td>
                     <td>none</td>
-                    <td>A text that a movie has been removed</td>
+                    <td>A text message indicating the movie has been removed</td>
                 </tr>
                 <tr>
                     <td>Delete user</td>
                     <td>/users/:id</td>
                     <td>DELETE</td>
                     <td>none</td>
-                    <td>A text that a user ID has been removed</td>
+                    <td>A text message indicating the user ID has been removed</td>
                 </tr>
             </tbody>
         </table>

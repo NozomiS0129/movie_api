@@ -3,15 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentation</title>
+    <title>My-Flix API Documentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    
 </head>
 <body>
-    <h1>Instruction</h1>
-    <p>Users can get information on movies, directors, and genres.</p>
-    <p>Users can sign up, update their personal information, and create a list of their favorite movies.</p>
-
-    <h1>Technology</h1>
-    <p>This API is a Node.js and Express application.</p>
-    <p>This API has been built based on REST architecture, with URL endpoints corresponding to the data operations.</p>
+    <div class="container">
+        <h1>My Flix app</h1>
+        <p>This web application provides users with access to information about different movies, directors, and genres.</p>
+        <p>Users can sign up, update their personal information, and create a list of their favorite movies.</p>
+    </div>
+    <div class="container">
+        <h2>My Flix app Documentation</h2>
+    </div>
+    <div class="container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Request</th>
+                    <th scope="col">URL</th>
+                    <th scope="col">HTTP Method</th>
+                    <th scope="col">Request body data format</th>
+                    <th scope="col">Response body data format</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Get a list of ALL movies</td>
+                    <td>/movies</td>
+                    <td>GET</td>
+                    <td>none</td>
+                    <td>A JSON object holding data about all the movies</td>
+                </tr>
+    
+                <tr>
+                    <td>Get data about a single movie by title</td>
+                    <td>/movies/:Title</td>
+                    <td>GET</td>
+                    <td>none</td>
+                    <td>A JSON object holding data about a single movie, containing genre, director, image URL. Example:
+                        <code>
+                            {
+                                "Title": "2001: A Space Odyssey",
+                                "Director": {
+                                    "Name": "Stanley Kubrick",
+                                    "Birth_Year": 1928,
+                                    "Death_Year": 1999
+                                }, 
+                                "Genre": {
+                                    "Name": "Sciece Fiction",
+                                    "Description": "Science fiction (or sci-fi) is a film genre that uses speculative, fictional..."
+                                },
+                                "Release_Year": 1968,
+                                "Image_Url": "https://upload.wikimedia.org/wikipedia/en/1/11/2001_A_Space_Odyssey_%281968%29.png"
+                            }
+                        </code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Get data about a genre by genre's name</td>
+                    <td>/movies/genre/:genreName</td>
+                    <td>GET</td>
+                    <td>none</td>
+                    <td>A JSON object holding data about a genre. Example:
+                        <code>
+                            {
+                                "Genre": {
+                                    "Name": "Sciece Fiction",
+                                    "Description": "Science fiction (or sci-fi) is a film genre that uses speculative, fictional..."
+                                },
+                            }
+                        </code>
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td>Get data about a director by director's name</td>
+                    <td>/movies/director/:directorName</td>
+                    <td>GET</td>
+                    <td>none</td>
+                    <td>A JSON object holding data about a director. Example:
+                        <code>
+                            {
+                                "Name": "Stanley Kubrick",
+                                "Birth_Year": 1928,
+                                "Death_Year": 1999
+                            }
+                        </code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Add a new user</td>
+                    <td>/users</td>
+                    <td>POST</td>
+                    <td>A JSON object holding data about the user to add, structured like:
+                        <code>
+                        {
+                            "Name": "John",
+                            "Email": "abc@xyz.com",
+                            "Password": "1234",
+                            "Birthday": "2000-01-01"
+                        }
+                        </code>
+                    </td>
+                    <td>A text that an user has been added</td>
+                </tr>
+                <tr>
+                    <td>Update user info</td>
+                    <td>/users/:id</td>
+                    <td>PUT</td>
+                    <td>A JSON object holding user info that shold be changed. It should contain one of the following key/value pairs:
+                        <code>
+                        {
+                            "Name": String,
+                            "Email": String,
+                            "Password": String,
+                            "Birthday": number
+                        }
+                        </code>
+                    </td>
+                    <td>A text message indicating the user's info was updated</td>
+                </tr>
+                <tr>
+                    <td>Add a movie to user's list of favorites</td>
+                    <td>users/:id/movieTitle</td>
+                    <td>POST</td>
+                    <td>none</td>
+                    <td>A text that a movie has been added</td>
+                </tr>
+                <tr>
+                    <td>Remove a movie from user's list of favorites</td>
+                    <td>/users/:id/:movieTitle</td>
+                    <td>DELETE</td>
+                    <td>none</td>
+                    <td>A text that a movie has been removed</td>
+                </tr>
+                <tr>
+                    <td>Delete user</td>
+                    <td>/users/:id</td>
+                    <td>DELETE</td>
+                    <td>none</td>
+                    <td>A text that a user ID has been removed</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" 
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" 
+    integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
 </body>
 </html>

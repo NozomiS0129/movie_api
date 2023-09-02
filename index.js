@@ -1,7 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const uuid = require("uuid");
-
 const morgan = require("morgan");
 const app = express();
 const mongoose = require("mongoose");
@@ -13,10 +12,13 @@ const Users = Models.User;
 mongoose.connect("mongodb://localhost:27017/movies", { useNewUrlParser: true, useUnifiedTopology: true});
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 app.use(morgan("common"));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+let auth = require("./auth.js")(app);
+const passport = require("passport");
+require("./passport.js");
 
 //Add new user
 app.post("/users", async (req, res) => {
@@ -73,9 +75,13 @@ app.get("/users/:UserName", async (req, res) => {
 });
 
 //Update user's info
-app.put("/users/:UserName", async (req, res) => {
-    await Users.findOneAndUpdate({ UserName: req.params.UserName }, {
-        $set:{
+app.put("/users/:UserName", passport.authenticate("jwt", {session: false}), async (req, res) => {
+    if(req.user.Username !== req.params.UserName){
+        return res.status(400).send("Permission denied");
+    }
+    await Users.findOneAndUpdate({ UserName: req.params.UserName },{
+        $set:
+        {
             UserName: req.body.UserName,
             Password: req.body.Password,
             Email: req.body.Email,
@@ -93,7 +99,7 @@ app.put("/users/:UserName", async (req, res) => {
 });
 
 //Add a movie to user's favorites list
-app.post("/users/:UserName/movies/:MovieID", async (req, res) => {
+app.post("/users/:UserName/movies/:MovieID", passport.authenticate("jwt", { session: false }), async (req, res) => {
     await Users.findOneAndUpdate({ UserName: req.params.UserName }, {
         $addToSet: { FavoriteMovies: req.params.MovieId }
     },
@@ -139,7 +145,7 @@ app.delete("/users/:UserName", async(req, res) => {
 });
 
 //Get a list of ALL movies
-app.get("/movies", async (req, res) => {
+app.get("/movies", passport.authenticate("jwt", {session: false}), async (req, res) => {
     await Movies.find().then((movies) => {
         res.status(201).json(movies);
     })

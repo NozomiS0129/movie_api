@@ -22,13 +22,13 @@ require("./passport.js");
 
 //Add new user
 app.post("/users", async (req, res) => {
-    await Users.findOne({ UserName: req.body.UserName})
+    await Users.findOne({ Username: req.body.Username })
     .then((user) => {
         if (user) {
-            return res.status(400).send(req.body.UserNamen + " already exists.");
+            return res.status(400).send(req.body.Username + " already exists.");
         } else {
             Users.create({
-                UserName: req.body.UserName,
+                Username: req.body.Username,
                 Password: req.body.Password,
                 Email: req.body.Email,
                 Birthday: req.body.Birthday
@@ -63,7 +63,7 @@ app.get("/users/:Username", passport.authenticate("jwt", {session: false}), asyn
     await Users.findOne({ Username: req.params.Username})
     .then((user) => {
         if (!user) {
-            res.status(400).send(req.params.UserName + " does not exist.");
+            res.status(400).send(req.params.Username + " does not exist.");
         } else {
             res.status(200).json(user);
         }

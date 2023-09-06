@@ -230,6 +230,10 @@ app.get("/movies/directors/:DirectorName", passport.authenticate("jwt", {session
     });
 });
 
+app.get("/", (req, res) => {
+    res.send("Welcome to MyFlix!");
+});
+
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
     console.log("Listening on Port " + port);

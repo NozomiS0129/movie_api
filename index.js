@@ -42,41 +42,42 @@ app.get("/", (req, res) => {
 
 //Add new user
 app.post("/users",
-[
-    check("Username", "Username is required").isLength({min: 5}),
-    check("Username", "Username contains non alphanumeric characters - not allowed.").isAlphanumeric(),
-    check("Password", "Password is required").not().isEmpty(),
-    check("Email", "Email does not appear to be valid").isEmail()
-],
-async (req, res) => {
-    let errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({errors: errors.array() });
-    }
-    let hashPassword = Users.hashPassword(req.body.Password);
-    await Users.findOne({ Username: req.body.Username })
-    .then((user) => {
-        if (user) {
-            return res.status(400).send(req.body.Username + " already exists.");
-        } else {
-            Users.create({
-                Username: req.body.Username,
-                Password: req.body.Password,
-                Email: req.body.Email,
-                Birthday: req.body.Birthday
-            })
-            .then((user) => {res.status(201).json(user)})
-            .catch((error) => {
-                console.error(error);
-                res.status(500).send("Error: " + error);
-            })
+    [
+        check("Username", "Username is required").isLength({min: 5}),
+        check("Username", "Username contains non alphanumeric characters - not allowed.").isAlphanumeric(),
+        check("Password", "Password is required").not().isEmpty(),
+        check("Email", "Email does not appear to be valid").isEmail()
+    ],
+    async (req, res) => {
+        let errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({errors: errors.array() });
         }
-    })
-    .catch((error) => {
-        console.error(error);
-        res.status(500).send("Error" + error);
-    });
-});
+        let hashedPassword = Users.hashPassword(req.body.Password);
+        await Users.findOne({ Username: req.body.Username })
+        .then((user) => {
+            if (user) {
+                return res.status(400).send(req.body.Username + " already exists.");
+            } else {
+                Users.create({
+                    Username: req.body.Username,
+                    Password: hashedPassword,
+                    Email: req.body.Email,
+                    Birthday: req.body.Birthday
+                })
+                .then((user) => {res.status(201).json(user)})
+                .catch((error) => {
+                    console.error(error);
+                    res.status(500).send("Error: " + error);
+                })
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send("Error" + error);
+        });
+    }
+);
 
 //Get all users
 app.get("/users", passport.authenticate("jwt", {session: false}), async (req, res) => {

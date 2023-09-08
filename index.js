@@ -1,10 +1,12 @@
 const express = require("express");
+const app = express();
+const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const uuid = require("uuid");
-const morgan = require("morgan");
-const app = express();
 const mongoose = require("mongoose");
 const Models = require("./models.js");
+const cors = require("cors");
+const { check, validationResult } = require("express-validator");
 
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -12,14 +14,13 @@ const Users = Models.User;
 //mongoose.connect("mongodb://localhost:27017/movies", { useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true});
 
-app.use(express.json());
 app.use(morgan("common"));
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const cors = require("cors");
 let allowedOrigins = ["http://localhost:8080", "http://testsite.com"];
-const { check, validationResult } = require("express-validator");
+
 app.use(cors({
     origin: (origin, callback) => {
         if(!origin) return callback(null, true);
@@ -30,10 +31,14 @@ app.use(cors({
         return callback(null, true);
     }
 }));
-let auth = require("./auth.js")(app);
+let auth = require("./auth")(app);
 const passport = require("passport");
-const { validationResult } = require("express-validator");
-require("./passport.js");
+//const { validationResult } = require("express-validator");
+require("./passport");
+
+app.get("/", (req, res) => {
+    res.send("Welcome to MyFlix!");
+});
 
 //Add new user
 app.post("/users",
@@ -228,10 +233,6 @@ app.get("/movies/directors/:DirectorName", passport.authenticate("jwt", {session
         console.errre(err);
         res.status(500).send("Error", + err);
     });
-});
-
-app.get("/", (req, res) => {
-    res.send("Welcome to MyFlix!");
 });
 
 const port = process.env.PORT || 8080;

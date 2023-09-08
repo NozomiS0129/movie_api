@@ -108,28 +108,39 @@ app.get("/users/:Username", passport.authenticate("jwt", {session: false}), asyn
 });
 
 //Update user's info
-app.put("/users/:Username", passport.authenticate("jwt", {session: false}), async (req, res) => {
-    if(req.user.Username !== req.params.Username){
-        return res.status(400).send("Permission denied");
-    }
-    await Users.findOneAndUpdate({ Username: req.params.Username },{
-        $set:
-        {
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
+app.put("/users/:Username",
+    [
+        check("Username", "Username is required").isLength({min: 5}),
+        check("Username", "Username contains non alphanumeric characters - not allowed.").isAlphanumeric(),
+        check("Password", "Password is required").not().isEmpty(),
+        check("Email", "Email does not appear to be valid").isEmail()
+    ],
+    passport.authenticate("jwt", {session: false}), 
+    async (req, res) => {
+        let errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({errors: errors.array() });
         }
-    },
-    { new: true})
-    .then((updateUser) => {
-        res.json(updateUser);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-    });
-});
+        let hashedPassword = Users.hashPassword(req.body.Password);
+        await Users.findOneAndUpdate({ Username: req.params.Username },{
+            $set:
+            {
+                Username: req.body.Username,
+                Password: hashedPassword,
+                Email: req.body.Email,
+                Birthday: req.body.Birthday
+            }
+        },
+        { new: true})
+        .then((updateUser) => {
+            res.json(updateUser);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send("Error: " + err);
+        });
+    }
+);
 
 //Add a movie to user's favorites list
 app.post("/users/:Username/movies/:MovieID", passport.authenticate("jwt", { session: false }), async (req, res) => {

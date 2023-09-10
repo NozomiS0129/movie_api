@@ -74,7 +74,6 @@ app.post("/users",
             }
         })
         .catch((error) => {
-            console.error(error);
             res.status(500).send("Error" + error);
         });
     }
@@ -87,7 +86,6 @@ app.get("/users", passport.authenticate("jwt", {session: false}), async (req, re
         res.status(200).json(users);
     })
     .catch((err) => {
-        console.error(err);
         res.status(500).send("Error" + err);
     });
 });
@@ -103,7 +101,6 @@ app.get("/users/:Username", passport.authenticate("jwt", {session: false}), asyn
         }
     })
     .catch((error) => {
-        console.error(error);
         res.status(500).send("Error: ", + error);
     });
 });
@@ -137,7 +134,6 @@ app.put("/users/:Username",
             res.json(updateUser);
         })
         .catch((err) => {
-            console.error(err);
             res.status(500).send("Error: " + err);
         });
     }
@@ -153,7 +149,6 @@ app.post("/users/:Username/movies/:MovieID", passport.authenticate("jwt", { sess
         res.json(updatedUser);
     })
     .catch((error) => {
-        console.error(error);
         res.status(500).send("Error: " + error);
     });
 });
@@ -168,7 +163,6 @@ app.delete("/users/:Username/movies/:MovieID", passport.authenticate("jwt", {ses
         res.json(updatedUser);
     })
     .catch((error) => {
-        console.error(error);
         res.status(500).send("Error: " + error);
     });
 });
@@ -184,7 +178,6 @@ app.delete("/users/:Username", passport.authenticate("jwt", {session: false}), a
         }
     })
     .catch((err) => {
-        console.error(err);
         res.status(500).send("Error: " + err);
     });
 });
@@ -194,8 +187,7 @@ app.get("/movies", passport.authenticate("jwt", {session: false}), async (req, r
     await Movies.find().then((movies) => {
         res.status(201).json(movies);
     })
-    .catch((err) => {
-        console.error(error);
+    .catch((error) => {
         res.status(500).send("Error: " + error);
     });
 });
@@ -211,7 +203,6 @@ app.get("/movies/:Title", passport.authenticate("jwt", {session: false}), async 
             }
         })
         .catch((error) => {
-            console.error(error);
             res.status(500).send("Error: " + error);
         });
 });
@@ -227,7 +218,6 @@ app.get("/movies/genres/:GenreName", passport.authenticate("jwt", {session: fals
         }
     })
     .catch((error) => {
-        console.error(error);
         res.status(500).send("Error: ", + error);
     });
 });
@@ -243,7 +233,6 @@ app.get("/movies/directors/:DirectorName", passport.authenticate("jwt", {session
         }
     })
     .catch((err) => {
-        console.errre(err);
         res.status(500).send("Error", + err);
     });
 });

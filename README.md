@@ -1,29 +1,14 @@
-# myFlix-client
-## Description
-This is the client side for an app called myFlix, which is based on existing server-side code(REST API and database) using React.
-The users can access information about movies including genre, director, image and more after creating a profile.
-Additionally, the users can register their favorite movie to the list.
-## Essential Views and Features
-**Main view**
-- Return all movies to the user
-- Filtering the list of movies with a “search” feature
-- Ability to select a movie for more details
-- Ability to log out
-- Ability to navigate to Profile view
+# Movie-api
 
-**Single Movie view**
-- Returns data (description, genre, director, image) about a single movie to the user
-- Allows users to add a movie to their list of favorites
+### Description
+This web application provides users with access to information about different movies, directors, and genres. 
+Users will be able to sign up, update their personal information, and create a list of their favorite movies.
 
-**Loging view**
-- Allows users to login with username and password
+### App Details
+  * The API has some endpoints which start from "movies" or "users" See __documentaion.html__ for more detail.
+  * The API is hosted on Heroku at [https://movies-flix-app-bb16fed0a4c0.herokuapp.com/].
 
-**Signup view**
-- Allows new user to register
-
-**Profile view**
-- Displays user registration details
-- Allows users to update their info
-- Displays favorite movies
-- Allows users to remove a movie from their list of favorites
-- Allows existing users to deregister
+### Technology
+  * The API is built with Node.js, Express.js, MongoDB. 
+  * You can refer more by checkig __package.json__.
+ 

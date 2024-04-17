@@ -29,6 +29,7 @@ let allowedOrigins = [
   "https://movies-flix-app-bb16fed0a4c0.herokuapp.com",
   "https://my-flix-1234.netlify.app",
   "http://localhost:4200",
+  "https://nozomis0129.github.io/myFlix-Angular-client/",
 ];
 
 app.use(
